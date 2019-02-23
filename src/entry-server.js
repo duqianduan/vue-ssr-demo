@@ -6,7 +6,7 @@ import createApp from './app';
 
 /**
  * The method will be called by renderer.
- * @param {*} context ctx
+ * @param {*} context renderer context
  */
 export default function (context) {
     // return a promise to renderer.
@@ -14,16 +14,14 @@ export default function (context) {
 
         const { app, store, router } = createApp();
 
-        const { url } = context;
-
         // set current router.
-        router.push(url);
+        router.push(context.url);
 
         // awaiting async router to resolve.
         router.onReady(() => {
             // get matched components from current router.
             const matchedComponents = router.getMatchedComponents();
-
+            // return 404 if there is no matched components.
             if (!matchedComponents.length) {
                 reject({ code: 404 });
             }

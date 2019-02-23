@@ -32,15 +32,17 @@ const microCache = new LRU({
 });
 
 app.get('*', (req, res) => {
+    // set response header
     res.setHeader('Content-Type', 'text/html');
 
+    // renderer context
     const ctx = {
         title: 'vue-ssr demo',
         url: req.url
     };
 
+    // read cache
     if (useMicroCache) {
-        // read cache
         const hit = microCache.get(req.url);
         if (hit) {
             console.log('read from cache.')

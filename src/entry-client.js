@@ -40,11 +40,6 @@ router.onReady(() => {
         const activated = matched.filter((c, i) => {
             return diffed || (diffed = (prevMatched[i] !== c))
         });
-        // go next page if all the matched components have rendered already.
-        if (!activated.length) {
-            return next();
-        }
-
         // get all hooks from activated components.
         const asyncDataHooks = activated.map(({ asyncData }) => {
             if (asyncData) {
@@ -54,15 +49,9 @@ router.onReady(() => {
                 })
             }
         });
-        // go next page if the activated components no hooks.
-        if (!asyncDataHooks.length) {
-            return next();
-        }
-
         // execute all hooks method then go next page.
         Promise.all(asyncDataHooks).then(next).catch(next);
     });
-
     // mount vue instance to static html for hydration.
     app.$mount('#app');
 });
