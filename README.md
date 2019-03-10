@@ -5,7 +5,9 @@ The ssr solution based on vue2 with vue-router and vuex.
 ``` bash
 # install
 npm install
-# build bundle and start node server
-npm run dev
+# build client and server bundle
+npm run build
+# start node server
+npm run start
 ```
 

@@ -8,15 +8,16 @@ const express = require('express');
 const LRU = require('lru-cache');
 
 // server bundle for building server app instance
-const bundle = require('./dist/vue-ssr-server-bundle.json');
+const serverBundle = require('./dist/vue-ssr-server-bundle.json');
 // client resource manifest
 const clientManifest = require('./dist/vue-ssr-client-manifest.json');
+// read html template string from index.html
 const template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
 
 // create renderer with server bundle and client manifest.
-const renderer = require('vue-server-renderer').createBundleRenderer(bundle, {
+const renderer = require('vue-server-renderer').createBundleRenderer(serverBundle, {
     template: template,
-    // auto reject client resource to html template
+    // auto inject client resource to html template
     clientManifest: clientManifest,
     runInNewContext: false
 });
@@ -58,7 +59,7 @@ app.get('*', (req, res) => {
             res.status(code).end(JSON.stringify(err));
             return;
         }
-        // return complete html
+        // return complete html content
         res.end(html);
         // set cache
         if (useMicroCache) {
